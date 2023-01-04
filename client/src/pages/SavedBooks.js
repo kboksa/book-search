@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Jumbotron,
   Container,
@@ -6,20 +6,14 @@ import {
   Card,
   Button,
 } from "react-bootstrap";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 
-// import { getMe, deleteBook } from '../utils/API';
-import { GET_ME } from "../utils/queries";
-import { REMOVE_BOOK } from "../utils/mutations";
 import Auth from "../utils/auth";
 import { removeBookId } from "../utils/localStorage";
-import { useQuery, useMutation } from "@apollo/client";
+import { GET_ME } from "../utils/queries";
+import { REMOVE_BOOK } from "../utils/mutations";
 
 const SavedBooks = () => {
-  // const [userData, setUserData] = useState({});
-
-  // // use this to determine if `useEffect()` hook needs to run again
-  // const userDataLength = Object.keys(userData).length;
-
   const { loading, data } = useQuery(GET_ME);
   const [removeBook] = useMutation(REMOVE_BOOK);
 
@@ -59,7 +53,7 @@ const SavedBooks = () => {
       </Jumbotron>
       <Container>
         <h2>
-          {userData.savedBooks?.length
+          {userData.savedBooks.length
             ? `Viewing ${userData.savedBooks.length} saved ${
                 userData.savedBooks.length === 1 ? "book" : "books"
               }:`
@@ -79,6 +73,12 @@ const SavedBooks = () => {
                 <Card.Body>
                   <Card.Title>{book.title}</Card.Title>
                   <p className="small">Authors: {book.authors}</p>
+                  <p className="small">
+                    Link:{" "}
+                    <a href={book.link} target="_blank" rel="noreferrer">
+                      {book.title}
+                    </a>
+                  </p>
                   <Card.Text>{book.description}</Card.Text>
                   <Button
                     className="btn-block btn-danger"
